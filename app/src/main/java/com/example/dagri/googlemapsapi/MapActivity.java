@@ -11,9 +11,11 @@ import android.support.v4.content.ContextCompat;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.drive.Drive;
+import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptor;
 import com.google.android.gms.maps.model.Circle;
 import com.google.android.gms.maps.model.CircleOptions;
 import com.google.android.gms.maps.model.LatLng;
@@ -33,7 +35,7 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-         mGoogleApiClient = new GoogleApiClient.Builder(this)
+        mGoogleApiClient = new GoogleApiClient.Builder(this)
                 .enableAutoManage(this /* FragmentActivity */,
                         this /* OnConnectionFailedListener */)
                 .addApi(Drive.API)
@@ -58,38 +60,13 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
         } else {
             // Show rationale and request permission.
         }
-        //Test
 
-        // Add a marker in Sydney and move the camera
-        // LatLng sydney = new LatLng(-34, 151);
-        // mMap.addMarker(new MarkerOptions().position(sydney).title("Marker in Sydney"));
-        // mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
 
-        // ERSTEN MARKER HINZUFUEGEN
-        // https://developers.google.com/maps/documentation/android-api/marker#marker_drehen
-        mMap.addMarker(new MarkerOptions()
-                        .position(
-                                // DIE POSITION IST DIE EINZIGE
-                                // NOTWENDIGE ANGABE FUER EINEN
-                                // MARKER
-                                new LatLng(-33, 151)
-                        )
-                        // ERSCHEINT BEIM KLICKEN AUF DEN MARKER
-                        .title("Hello world")
-                        // ZIEHEN DES MARKERS ERMOEGLICHEN
-                        .draggable(true)
-                        // ALPHA WERT SETZTEN, STANDART IST 1
-                        .alpha(0.7f)
-                        // ZUSAETZLICHEN TEXT UNTER DEM TITEL ANZEIGEN
-                        .snippet("Dies ist zusaetzlicher nutzloser Text unter dem Titel!")
-                        .rotation(30f)
-                        .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE))
-                        .flat(true)
-                // TODO : INFOFENSTER ANPASSEN
-                // https://developers.google.com/maps/documentation/android-api/infowindows#benutzerdefinierte_info-fenster
-                // TODO : ZIEH UND KLICK EREIGNISSE ERWARTEN?!
-        );
-        // TODO : IRGENDWELCHE TOLLEN EFEKTE MIT DEN ELEMENTEN FUER DIE PRAESENTATION BAUEN
+        double lat = 51.4477;
+        double lon = 7.2711;
+        LatLng hochschule = new LatLng(lat, lon);
+        mMap.moveCamera(CameraUpdateFactory.newLatLng(hochschule));
+
         // https://developers.google.com/maps/documentation/android-api/shapes#polygone
 
         // Instantiates a new Polyline object and adds points to define a rectangle
@@ -122,8 +99,6 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
 // Get back the mutable Circle
         Circle circle = mMap.addCircle(circleOptions);
 
-        // TODO : UEBERLAGERUNGEN
-
 
         // KARTENTYPEN SETZTEN:
         // mMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
@@ -144,6 +119,27 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
         // https://developers.google.com/maps/documentation/android-api/location#laufzeitberechtigungen_anfordern
         mMap.getUiSettings().setMyLocationButtonEnabled(true);
 
+        double radius = 0.02;
+
+
+        for (double a = 0; a < 2 * Math.PI; a = a + 0.1) {
+            double actLon = lon + Math.cos(a) * radius;
+            double actLat = lat + Math.sin(a) * radius;
+
+            mMap.addMarker(new MarkerOptions()
+                    .position(
+                            new LatLng(actLat, actLon)
+
+                    )
+                    .icon(BitmapDescriptorFactory.defaultMarker((float) Math.random() * 255))
+                    .title("Sinnloser Punkt in der Landschaft!")
+                    .snippet("Dies ist zusaetzlicher nutzloser Text unter dem Titel!")
+                    .alpha((float) Math.random())
+                    .draggable(true)
+            );
+        }
+
+        // TODO : UEBERLAGERUNGEN
 
     }
 
@@ -152,8 +148,6 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
         // An unresolvable error has occurred and a connection to Google APIs
         // could not be established. Display an error message, or handle
         // the failure silently
-
-        // ...
     }
 
     protected void onStart() {
@@ -165,7 +159,5 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
         mGoogleApiClient.disconnect();
         super.onStop();
     }
-
-
 
 }
