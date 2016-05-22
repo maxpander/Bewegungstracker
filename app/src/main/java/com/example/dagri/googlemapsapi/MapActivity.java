@@ -106,14 +106,37 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
 
         // Instantiates a new Polyline object and adds points to define a rectangle
         PolylineOptions rectOptionsPolyline = new PolylineOptions()
-                .add(new LatLng(-33.35, 152.0))
-                .add(new LatLng(-33.45, 152.0)) // North of the previous point, but at the same longitude
-                .add(new LatLng(-33.45, 152.2)) // Same latitude, and 30km to the west
-                .add(new LatLng(-33.35, 152.2)) // Same longitude, and 16km to the south
-                .color(Color.CYAN);
-
+                .add(new LatLng(51.4566, 7.2626))
+                .add(new LatLng(51.4511, 7.2626)) // North of the previous point, but at the same longitude
+                //.add(new LatLng(-33.45, 152.2)) // Same latitude, and 30km to the west
+                //.add(new LatLng(-33.35, 152.2)) // Same longitude, and 16km to the south
+                .color(Color.BLACK);
         // Get back the mutable Polyline
         Polyline polyline = mMap.addPolyline(rectOptionsPolyline);
+
+        // Instantiates a new Polyline object and adds points to define a rectangle
+        PolylineOptions rectOptionsPolyline1 = new PolylineOptions()
+                .add(new LatLng(51.4566, 7.2778))
+                .add(new LatLng(51.4511, 7.2778)) // North of the previous point, but at the same longitude
+                //.add(new LatLng(-33.45, 152.2)) // Same latitude, and 30km to the west
+                //.add(new LatLng(-33.35, 152.2)) // Same longitude, and 16km to the south
+                .color(Color.BLACK);
+        Polyline polyline1 = mMap.addPolyline(rectOptionsPolyline1);
+
+        PolylineOptions rectOptionsPolyline2 = new PolylineOptions()
+                .add(new LatLng(51.4461, 7.2606))
+                .add(new LatLng(51.4425, 7.2634))
+                .add(new LatLng(51.4415, 7.2677))
+                .add(new LatLng(51.4412, 7.2732))
+                .add(new LatLng(51.4415, 7.2775))
+                .add(new LatLng(51.4427, 7.2804))
+                .add(new LatLng(51.4471, 7.2817))
+
+                .color(Color.BLACK);
+        Polyline polyline2 = mMap.addPolyline(rectOptionsPolyline2);
+
+
+
 
         // Instantiates a new Polygon object and adds points to define a rectangle
         PolygonOptions rectOptionsPolygon = new PolygonOptions()
