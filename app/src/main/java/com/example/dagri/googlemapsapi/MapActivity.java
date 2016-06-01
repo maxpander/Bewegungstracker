@@ -4,6 +4,7 @@ package com.example.dagri.googlemapsapi;
 import android.Manifest;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
+import android.location.Location;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
@@ -11,6 +12,8 @@ import android.support.v4.content.ContextCompat;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.drive.Drive;
+import com.google.android.gms.location.LocationListener;
+import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -27,13 +30,25 @@ import com.google.android.gms.maps.model.PolygonOptions;
 import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
 
-public class MapActivity extends FragmentActivity implements OnMapReadyCallback, GoogleApiClient.OnConnectionFailedListener {
+import java.text.DateFormat;
+import java.util.Date;
+
+public class MapActivity extends FragmentActivity implements OnMapReadyCallback, GoogleApiClient.OnConnectionFailedListener, LocationListener {
 
     // GOOGLE MAP OBJEKT ERSTELLEN, DAS IM WEITEREN VERLAUF VERWENDET WIRD
     private GoogleMap mMap;
 
     // GOOGLE API CLIENT OBJEKT ERSTELLEN, DAS IM WEITEREN VERLAUF VERWENDET WIRD
     GoogleApiClient mGoogleApiClient;
+
+    // The current location.
+    Location mCurrentLocation;
+
+    // The last update time as String.
+    String mLastUpdateTime;
+
+    // The object to store the location data inside.
+    LocationStore locStore = new LocationStore();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -212,7 +227,26 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
         // TRENNEN VON DEM GOOGLE API CLIENT
         // SPART STROM
         mGoogleApiClient.disconnect();
+        this.locStore.toXML();
         super.onStop();
     }
 
+    // ERFASST DIE POSITION ETWA ALLE 100 M
+    protected void createLocationRequest() {
+        LocationRequest mLocationRequest = new LocationRequest();
+        // ALLE 10 SEKUNDEN
+        mLocationRequest.setInterval(10000);
+        // MAXIMAL ALLE 5 SEKUNDEN
+        mLocationRequest.setFastestInterval(5000);
+        // HOHE PRAEZISION
+        mLocationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
+    }
+
+    @Override
+    public void onLocationChanged(Location location) {
+        mCurrentLocation = location;
+        mLastUpdateTime = DateFormat.getDateTimeInstance().format(new Date());
+        this.locStore.addLocation(mCurrentLocation.getLatitude(), mCurrentLocation.getLongitude(), mLastUpdateTime);
+    }
 }
+
