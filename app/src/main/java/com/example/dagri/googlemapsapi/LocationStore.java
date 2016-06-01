@@ -57,7 +57,7 @@ public class LocationStore {
      */
     public void toXML(){
         try {
-            File ergXml = new File(System.currentTimeMillis() + ".xml");
+            File ergXml = new File("LocationXML"+System.currentTimeMillis() + ".xml");
             FileWriter fw = new FileWriter(ergXml);
             BufferedWriter bw = new BufferedWriter(fw);
 
