@@ -57,27 +57,50 @@ public class LocationStore {
      */
     public void toXML(){
         try {
+
             File ergXml = new File("LocationXML"+System.currentTimeMillis() + ".xml");
             FileWriter fw = new FileWriter(ergXml);
             BufferedWriter bw = new BufferedWriter(fw);
 
             bw.write("<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?>");
 
+
             bw.write("<userid>" + "useridnull" + "</userid>");
+
             bw.write("<locations>");
+
             for(int a=0;a<this.getLatLng().size();a++){
                 bw.write("<location>");
+
                 bw.write("<lat>" + this.getLatLng().get(a).latitude+"</lat>");
+
                 bw.write("<lon>" + this.getLatLng().get(a).longitude+"</lon>");
-                bw.write("<time>" + this.getTimes().get(a).toString()+"</lat>");
+
+                bw.write("<time>" + this.getTimes().get(a).toString()+"</time>");
+
                 bw.write("</location>");
+
             }
             bw.write("</locations>");
+
             bw.close();
         }
         catch (IOException e){
             LOG.severe("COULD NOT PARSE XML!");
         }
+
+        System.out.println("<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?>");
+        System.out.println("<userid>" + "useridnull" + "</userid>");
+        System.out.println("<locations>");
+        for(int a=0;a<this.getLatLng().size();a++){
+            System.out.println("<location>");
+            System.out.println("<lat>" + this.getLatLng().get(a).latitude+"</lat>");
+            System.out.println("<lon>" + this.getLatLng().get(a).longitude+"</lon>");
+            System.out.println("<time>" + this.getTimes().get(a).toString()+"</time>");
+            System.out.println("</location>");
+        }
+        System.out.println("</locations>");
+
     }
 
     // GETTERS AND SETTERS
