@@ -1,5 +1,7 @@
 package com.example.dagri.googlemapsapi;
 
+import android.content.Intent;
+
 import com.google.android.gms.maps.model.LatLng;
 
 import java.io.BufferedWriter;
@@ -55,10 +57,10 @@ public class LocationStore {
     /**
      * Converts the internal stores locations to a XML structure.
      */
-    public void toXML(){
+    public void toXML() {
         try {
 
-            File ergXml = new File("LocationXML"+System.currentTimeMillis() + ".xml");
+            File ergXml = new File("LocationXML" + System.currentTimeMillis() + ".xml");
             FileWriter fw = new FileWriter(ergXml);
             BufferedWriter bw = new BufferedWriter(fw);
 
@@ -69,14 +71,14 @@ public class LocationStore {
 
             bw.write("<locations>");
 
-            for(int a=0;a<this.getLatLng().size();a++){
+            for (int a = 0; a < this.getLatLng().size(); a++) {
                 bw.write("<location>");
 
-                bw.write("<lat>" + this.getLatLng().get(a).latitude+"</lat>");
+                bw.write("<lat>" + this.getLatLng().get(a).latitude + "</lat>");
 
-                bw.write("<lon>" + this.getLatLng().get(a).longitude+"</lon>");
+                bw.write("<lon>" + this.getLatLng().get(a).longitude + "</lon>");
 
-                bw.write("<time>" + this.getTimes().get(a).toString()+"</time>");
+                bw.write("<time>" + this.getTimes().get(a).toString() + "</time>");
 
                 bw.write("</location>");
 
@@ -84,19 +86,19 @@ public class LocationStore {
             bw.write("</locations>");
 
             bw.close();
-        }
-        catch (IOException e){
+        } catch (IOException e) {
             LOG.severe("COULD NOT PARSE XML!");
         }
+
 
         System.out.println("<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?>");
         System.out.println("<userid>" + "useridnull" + "</userid>");
         System.out.println("<locations>");
-        for(int a=0;a<this.getLatLng().size();a++){
+        for (int a = 0; a < this.getLatLng().size(); a++) {
             System.out.println("<location>");
-            System.out.println("<lat>" + this.getLatLng().get(a).latitude+"</lat>");
-            System.out.println("<lon>" + this.getLatLng().get(a).longitude+"</lon>");
-            System.out.println("<time>" + this.getTimes().get(a).toString()+"</time>");
+            System.out.println("<lat>" + this.getLatLng().get(a).latitude + "</lat>");
+            System.out.println("<lon>" + this.getLatLng().get(a).longitude + "</lon>");
+            System.out.println("<time>" + this.getTimes().get(a).toString() + "</time>");
             System.out.println("</location>");
         }
         System.out.println("</locations>");
